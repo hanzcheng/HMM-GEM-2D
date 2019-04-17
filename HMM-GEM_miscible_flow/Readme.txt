@@ -37,5 +37,5 @@ Files related to characteristic tracking:
 Processing:
 1. compute_area - computes area of a polygonal region
 2. compAreaF - computes area of intersection bet. 2 polygons
-3. PolygonClip - clips out the polygonal region of intersection bet. 2 polygons
+3. PolygonClip - clips out the polygonal region of intersection bet. 2 polygons (source: http://www.cs.man.ac.uk/~toby/gpc/)
 4. write_solution_vtk - writes a vtk file for visualising the solution profile
