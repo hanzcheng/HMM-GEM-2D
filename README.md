@@ -6,6 +6,8 @@ meshes: Different mesh types are given in meshes_HMM_GEM
 
 problems: 
 
-1. Miscible flow model (files found in HMM-GEM_miscible_flow)
+1. Miscible flow model (found in HMM-GEM_miscible_flow)
 
-2. Advection-diffusion-reaction model (to be uploaded soon)
+2. Advection-reaction model for solenoidal fields (found in ELLAM_MMOC_advection_reaction)
+
+3. Advection-diffusion-reaction model (to be uploaded soon)
