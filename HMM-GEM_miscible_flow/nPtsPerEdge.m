@@ -9,7 +9,9 @@ for i=1:ncell
         pPerEdge(i) = ceil(pPerEdge(i));
     end
     %% can comment out the latter lines for mKreg points
-        pPerEdge(i) = 2^(ceil(2*tstep/diam(i)))*pPerEdge(i)+1;
+        pPerEdge(i) = 2^(ceil(min(2*tstep/diam(i),4)))*pPerEdge(i)+1; 
+        % we don't want to track too many points, which is why it is min with 4
+        % if we want better accuracy, we should reduce time step
         if mod(pPerEdge(i),2)==0
             pPerEdge(i) = pPerEdge(i)+1; % odd no. of points to make sure midpt is included in tracking
         end
