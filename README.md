@@ -2,6 +2,8 @@
 
 HMM-GEM scheme for generic meshes in 2D
 
+Acknowledgement: This research was supported by the Australian Government through the Australian Research Council's Discovery Projects funding scheme (project number DP170100605).
+
 meshes: Different mesh types are given in meshes_HMM_GEM
 
 Problems: 
