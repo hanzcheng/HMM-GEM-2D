@@ -46,7 +46,7 @@ while (max(pctErr)>1e-6 && nAdj<ncell)
                 Tv1 = newPointsB(cell_ep(currCell,1+eCtr),:); % tracked vertices
                 Tv2 = newPointsB(cell_ep(currCell,nEdgePts+eCtr),:); % tracked vertices
                 oN = (Tv2 - Tv1)/norm(Tv2 - Tv1)*[0 1; -1 0]; % outward normal
-                uDotN = (-1)^(nAdj+1)*oN*velPt;
+                uDotN = (-1)^(nAdj+1)*oN*velPt';
                 if aErr(currCell)>0
                     if uDotN<0
                         eInv(j,1) = 1;

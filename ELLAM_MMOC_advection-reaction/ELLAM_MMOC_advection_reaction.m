@@ -20,21 +20,30 @@ cg = gravity_centers(ncell,cell_v,vertex,area);
 alfa = 0;
 % Source term
 source = @(x,y) 0;
-% Exact velocity
-v_exact = @(x,y) [(1-2*y) .* x .* (1-x);-(1-2*x) .* y .* (1-y)];
-% Initial condition
 global testcase
-testcase = 0;
+testcase = 4;
+% Exact velocity
+if testcase <= 2
+    v_exact = @(x,y) [ 0.0625 *ones(size(x))  0 * ones(size(y))];
+elseif testcase >= 3 
+    v_exact = @(x,y) [(1-2*y) .* x .* (1-x), -(1-2*x) .* y .* (1-y)];
+end
+% Initial condition
+
+tFin = 8; %final time
+tstep = 0.8; %time step
+solex = compute_refSol(v_exact,tFin,ncell,cell_v,vertex,center);
+
 cPrev = zeros(ncell+nedge,1);
 for i=1:ncell
     cPrev(i) = initCond(cg(i,:));
 end
 
-%% numerical scheme and time step
+%% choice of numerical scheme and time step
 numScheme = "ELLAM"; %actually since we look at solenoidal fields
 % numScheme = "MMOC"; %ELLAM and MMOC are equivalent
-tstep = 0.5; %time step
-tFin = 8; %final time
+
+
 nbsteps = ceil(tFin/tstep);
 times=[0:tstep:tFin];
 
@@ -104,6 +113,7 @@ for cell_i=1:ncell
     end
 end
 
+
 % characteristic tracking
 if numScheme == "ELLAM"
     [newPoints,tTrack]=complete_tracking_exact_vel(tstep,pointsToTrack,v_exact,0);
@@ -111,10 +121,17 @@ elseif numScheme == "MMOC"
     [newPoints,tTrack]=complete_tracking_exact_vel(tstep,pointsToTrack,v_exact,1);
 end
 % area of intersection bet tracked and residing cells
-[AreaIn,AreaT]=compArea_cell(ncell,pointsToTrack, newPoints,cell_ep);
+[AreaIn,AreaT,tInt]=compArea_cell(ncell,pointsToTrack, newPoints,cell_ep);
 % local volume adj for local mass conservation
+tic;
+if testcase>=3
 [AreaIn,pctErr,aErr,nAdj,aErrTbInit] = adjust_volumes_for_local_mass_divFree(vertex,cell_v,AreaIn,area,ncell,cell_e,cell_n,newPoints,cellInvI,cell_ep,pOnEdge,v_exact);
-
+end
+tAdj=toc;
+tTotal = tAdj+tInt+tTrack;
+tTrack = tTrack/tTotal;
+tAdj = tAdj/tTotal;
+tInt = tInt/tTotal;
 
 write_solution_ensight(0,0,0,times,ncell,nedge,nvert,cell_v,cell_n,cell_e,vertex,cg);
 %process the initial condition for plotting by 
@@ -175,6 +192,11 @@ for m=1:nbsteps
     
     write_solution_ensight(1,c,m,times,ncell,nedge,nvert,cell_v,cell_n,cell_e,vertex,cg);
 end
+[L2err,L1err,pL2err,pL1err,allLayers,nLayers] = compute_errors(solex,cCurr,area,ncell);
+    L2err
+    L1err
+    pL2err
+    pL1err
 
 if numScheme == "ELLAM"
     write_solution_vtk(c,'solution_ELLAM_rect',ncell,nedge,nvert,cell_v,cell_n,cell_e,vertex);

@@ -1,5 +1,5 @@
-function [AreaIn,AreaT]=compArea_cell(ncell,pointsToTrack, newPoints,cell_ep)
-
+function [AreaIn,AreaT,tInt]=compArea_cell(ncell,pointsToTrack, newPoints,cell_ep)
+tic;
     AreaIn=zeros(ncell,ncell); %AreaIn(i,j) gives the area of the intersection of cell i and tracked cell j
     origPoints=cell(1,ncell);
     trackedPoly=cell(1,ncell);
@@ -37,4 +37,5 @@ function [AreaIn,AreaT]=compArea_cell(ncell,pointsToTrack, newPoints,cell_ep)
         end
     end
 %     AreaIn=sparse(AreaIn);
+tInt=toc;
 end
