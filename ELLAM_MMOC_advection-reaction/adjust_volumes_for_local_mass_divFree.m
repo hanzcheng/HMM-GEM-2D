@@ -12,7 +12,7 @@ for i=1:nCellsInv
     aErr(currCell) = sum(changedArea(:,currCell))-area(currCell); % if +, excess, if -, missing
 end
 aErrTbInit = aErr;
-while (max(pctErr)>1e-6 && nAdj<ncell)
+while (max(pctErr)>1e-4 && nAdj<ncell)
     
     %% adjust areas to remove errors
     for i=1:nCellsInv
